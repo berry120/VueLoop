@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package weatherlink;
 
 import java.util.Calendar;
@@ -86,7 +81,7 @@ public class WeatherLoopPacket {
 
     public Temperature getInsideTemperature() {
         double far = (get2byteUnsigned(arr[9], arr[10]) * 0.1);
-        return Temperature.fromRaw(far);
+        return Temperature.fromFar(far);
     }
 
     public int getInsideHumidity() {
@@ -95,7 +90,7 @@ public class WeatherLoopPacket {
     
     public Temperature getOutsideTemperature() {
         double far = (get2byteUnsigned(arr[12], arr[13]) * 0.1);
-        return Temperature.fromRaw(far);
+        return Temperature.fromFar(far);
     }
 
     public int getWindSpeed() {
@@ -119,19 +114,19 @@ public class WeatherLoopPacket {
     }
     
     public Temperature getDewPoint() {
-        return Temperature.fromRaw(get2byteUnsigned(arr2[30], arr2[31]));
+        return Temperature.fromFar(get2byteUnsigned(arr2[30], arr2[31]));
     }
     
     public Temperature getHeatInex() {
-        return Temperature.fromRaw(get2byteUnsigned(arr[35], arr[36]));
+        return Temperature.fromFar(get2byteUnsigned(arr[35], arr[36]));
     }
     
     public Temperature getWindChill() {
-        return Temperature.fromRaw(get2byteUnsigned(arr2[37], arr2[38]));
+        return Temperature.fromFar(get2byteUnsigned(arr2[37], arr2[38]));
     }
     
     public Temperature getTHSWIndex() {
-        return Temperature.fromRaw(get2byteUnsigned(arr[39], arr[40]));
+        return Temperature.fromFar(get2byteUnsigned(arr[39], arr[40]));
     }
 
     public int getWindDirection() {
