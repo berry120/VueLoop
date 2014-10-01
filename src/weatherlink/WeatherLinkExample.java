@@ -10,7 +10,7 @@ public class WeatherLinkExample {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new VueLooper("COM7").loop(new LoopCallback() {
+        new VueLooper("COM3").loop(new LoopCallback() {
 
             @Override
             public void weatherDataSent(WeatherLoopPacket packet) {
