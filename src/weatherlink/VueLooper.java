@@ -1,10 +1,7 @@
 package weatherlink;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import jssc.SerialPort;
 import jssc.SerialPortException;
 import jssc.SerialPortTimeoutException;
@@ -17,6 +14,7 @@ import jssc.SerialPortTimeoutException;
  */
 public class VueLooper {
 
+    private static final Logger LOGGER = Logger.getLogger(VueLooper.class.getName());
     private SerialPort serialPort;
     private WeatherLoopPacket lastPacket;
     private volatile boolean stop;
@@ -43,40 +41,47 @@ public class VueLooper {
                     reset();
                     while (!stop) {
                         try {
-                            read();
-                            while(buffer.size() >= 198) {
-                                byte[] arr = get99();
-                                byte[] arr2 = get99();
-                                WeatherLoopPacket packet = new WeatherLoopPacket(arr, arr2);
-                                callback.weatherDataSent(packet);
-                                lastPacket = packet;
+                            if(!wakeup()) {
+                                LOGGER.log(Level.WARNING, "Can't wake up... resetting");
+                                reset();
                             }
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
+                            serialPort.writeBytes("LPS 3 2\n".getBytes());
+                            if(serialPort.readBytes(1)[0]!=6) {
+                                LOGGER.log(Level.WARNING, "No ACK... resetting");
+                                reset();
+                            }
+                            byte[] arr = serialPort.readBytes(99, 5000);
+                            byte[] arr2 = serialPort.readBytes(99, 5000);
+                            WeatherLoopPacket packet = new WeatherLoopPacket(arr, arr2);
+                            callback.weatherDataSent(packet);
+                            lastPacket = packet;
+                        } catch (SerialPortException | SerialPortTimeoutException ex) {
+                            LOGGER.log(Level.SEVERE, "Error in loop", ex);
+                            reset();
                         }
                     }
                     serialPort.closePort();
                 } catch (SerialPortException ex) {
-                    ex.printStackTrace();
+                    LOGGER.log(Level.SEVERE, "Error in loop", ex);
                 }
             }
         };
         loopThread.start();
     }
 
-    private Queue<Byte> buffer = new LinkedList<>();
-
-    private void read() {
-        try {
-            byte[] arr = serialPort.readBytes(1, 5000);
-            if (arr != null) {
-                for (byte b : arr) {
-                    buffer.add(b);
+    private boolean wakeup() {
+        for (int i = 0; i < 3; i++) {
+            try {
+                serialPort.writeByte((byte) 10);
+                byte[] returned = serialPort.readBytes(2, 1200);
+                if (returned[0] == '\n' && returned[1] == '\r') {
+                    return true;
                 }
+            } catch (SerialPortException | SerialPortTimeoutException ex) {
+                LOGGER.log(Level.SEVERE, "Error in wakeup", ex);
             }
-        } catch (Exception ex) {
-            reset();
         }
+        return false;
     }
 
     private void reset() {
@@ -90,25 +95,8 @@ public class VueLooper {
                     SerialPort.DATABITS_8,
                     SerialPort.STOPBITS_1,
                     SerialPort.PARITY_NONE);
-            serialPort.writeBytes("LPS 3\n".getBytes());
-            serialPort.readBytes(1, 5000);
-        } catch(SerialPortTimeoutException ex) {
-            reset();
-        }
-        catch (SerialPortException | InterruptedException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    private byte[] get99() {
-        if (buffer.size() >= 99) {
-            byte[] ret = new byte[99];
-            for (int i = 0; i < 99; i++) {
-                ret[i] = buffer.poll();
-            }
-            return ret;
-        } else {
-            return null;
+        } catch (SerialPortException | InterruptedException ex) {
+            LOGGER.log(Level.SEVERE, "Error in reset", ex);
         }
     }
 
