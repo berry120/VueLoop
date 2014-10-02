@@ -1,5 +1,6 @@
 package weatherlink;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -418,4 +419,30 @@ public class WeatherLoopPacket {
         return (y << 8 & 0xFF00 | x & 0xFF);
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 53 * hash + Arrays.hashCode(this.arr);
+        hash = 53 * hash + Arrays.hashCode(this.arr2);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final WeatherLoopPacket other = (WeatherLoopPacket) obj;
+        if (!Arrays.equals(this.arr, other.arr)) {
+            return false;
+        }
+        if (!Arrays.equals(this.arr2, other.arr2)) {
+            return false;
+        }
+        return true;
+    }
+    
 }
