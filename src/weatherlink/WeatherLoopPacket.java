@@ -200,7 +200,7 @@ public class WeatherLoopPacket {
      *
      * @return the current heat index temperature.
      */
-    public Temperature getHeatInex() {
+    public Temperature getHeatIndex() {
         return Temperature.fromFar(get2byteUnsigned(arr[35], arr[36]));
     }
 
@@ -394,6 +394,7 @@ public class WeatherLoopPacket {
                 + "Inside humidity: " + getInsideHumidity() + "\n"
                 + "Outside humidity: " + getOutsideHumidity() + "\n"
                 + "UV Index: " + getUVIndex() + "\n"
+                + "Heat Index: " + getHeatIndex() + "\n"
                 + "Storm Rain: " + getStormRain() + "\n"
                 + "Storm start date: " + getStormStartDate() + "\n"
                 + "Last 15 mins Rain: " + getLast15MinsRain() + "\n"
