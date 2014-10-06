@@ -41,19 +41,21 @@ public class VueLooper {
                     reset();
                     while (!stop) {
                         try {
-                            if(!wakeup()) {
+                            if (!wakeup()) {
                                 LOGGER.log(Level.WARNING, "Can't wake up... resetting");
                                 reset();
                             }
                             serialPort.writeBytes("LPS 3 2\n".getBytes());
-                            if(serialPort.readBytes(1)[0]!=6) {
+                            if (serialPort.readBytes(1)[0] != 6) {
                                 LOGGER.log(Level.WARNING, "No ACK... resetting");
                                 reset();
                             }
                             byte[] arr = serialPort.readBytes(99, 5000);
                             byte[] arr2 = serialPort.readBytes(99, 5000);
                             WeatherLoopPacket packet = new WeatherLoopPacket(arr, arr2);
-                            callback.weatherDataSent(packet);
+                            if (!packet.equals(lastPacket)) {
+                                callback.weatherDataSent(packet);
+                            }
                             lastPacket = packet;
                         } catch (SerialPortException | SerialPortTimeoutException ex) {
                             LOGGER.log(Level.SEVERE, "Error in loop", ex);
