@@ -247,7 +247,7 @@ public class WeatherLoopPacket {
      * @return the rain rate (in mm per hour.)
      */
     public double getRainRate() {
-        return get2byteUnsigned(arr[41], arr[42]) * 0.0254;
+        return get2byteUnsigned(arr[41], arr[42]) * 0.2;
     }
 
     /**
@@ -274,7 +274,7 @@ public class WeatherLoopPacket {
      * @return the storm rain rate (in mm per hour.)
      */
     public double getStormRain() {
-        return get2byteUnsigned(arr[46], arr[47]) * 0.0254;
+        return get2byteUnsigned(arr[46], arr[47]) * 0.2;
     }
 
     /**
@@ -297,7 +297,7 @@ public class WeatherLoopPacket {
      * @return the last day's rain level (in mm.)
      */
     public double getDayRain() {
-        return get2byteUnsigned(arr[50], arr[51]) * 0.0254;
+        return get2byteUnsigned(arr[50], arr[51]) * 0.2;
     }
     /**
      * Get the last 15 minute's rain level (in mm.)
@@ -305,7 +305,7 @@ public class WeatherLoopPacket {
      * @return the last 15 minute's rain level (in mm.)
      */
     public double getLast15MinsRain() {
-        return get2byteUnsigned(arr2[52], arr2[53]) * 0.0254;
+        return get2byteUnsigned(arr2[52], arr2[53]) * 0.2;
     }
 
     /**
@@ -314,7 +314,7 @@ public class WeatherLoopPacket {
      * @return the last hour's rain level (in mm.)
      */
     public double getLastHourRain() {
-        return get2byteUnsigned(arr2[54], arr2[55]) * 0.0254;
+        return get2byteUnsigned(arr2[54], arr2[55]) * 0.2;
     }
 
     /**
@@ -323,7 +323,7 @@ public class WeatherLoopPacket {
      * @return the last month's rain level (in mm.)
      */
     public double getMonthRain() {
-        return get2byteUnsigned(arr[52], arr[53]) * 0.0254;
+        return get2byteUnsigned(arr[52], arr[53]) * 0.2;
     }
     /**
      * Get the last year's rain level (in mm.)
@@ -331,7 +331,7 @@ public class WeatherLoopPacket {
      * @return the last year's rain level (in mm.)
      */
     public double getYearRain() {
-        return get2byteUnsigned(arr[54], arr[55]) * 0.0254;
+        return get2byteUnsigned(arr[54], arr[55]) * 0.2;
     }
 
     /**
@@ -340,7 +340,7 @@ public class WeatherLoopPacket {
      * @return the day evapotranspiration level (in mm.)
      */
     public double getDayET() {
-        return get2byteUnsigned(arr[56], arr[57]) * 0.0254;
+        return get2byteUnsigned(arr[56], arr[57]) * 0.2;
     }
 
     /**
@@ -349,7 +349,7 @@ public class WeatherLoopPacket {
      * @return the month evapotranspiration level (in mm.)
      */
     public double getMonthET() {
-        return get2byteUnsigned(arr[58], arr[59]) * 0.254;
+        return get2byteUnsigned(arr[58], arr[59]) * 2;
     }
 
     /**
@@ -358,7 +358,7 @@ public class WeatherLoopPacket {
      * @return the year evapotranspiration level (in mm.)
      */
     public double getYearET() {
-        return get2byteUnsigned(arr[60], arr[61]) * 0.254;
+        return get2byteUnsigned(arr[60], arr[61]) * 0.2;
     }
 
     /**
