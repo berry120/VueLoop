@@ -362,8 +362,11 @@ public class WeatherLoopPacket {
     }
 
     /**
-     * Get the transmitter's battery status (further details unknown.)
-     * @return the transmitter's battery status.
+     * Get the transmitters' battery status. The base station can support up
+     * to 8 transmitters, this method returns a byte with each bit representing 
+     * the battery status of the transmitter. If a bit is a 1, the corresponding
+     * transmitter battery is low and should be replaced.
+     * @return the transmitters' battery status.
      */
     public int getTransmitterBatteryStatus() {
         return arr[86];
