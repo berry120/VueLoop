@@ -7,7 +7,19 @@ VueLoop
 
 Simple library for getting weather data from the Vantage Vue weather station. Serial parameters are hard coded at present since all examples I've found have a baud rate of 19200, but submit an issue / PR if this isn't the case and I'll take a look.
 
-Example usage:
+## Setup
+
+### Maven
+    <dependency>
+      <groupId>com.github.berry120.VueLoop</groupId>
+      <artifactId>VueLoop</artifactId>
+      <version>1.0</version>
+    </dependency>
+    
+### Gradle
+    compile 'com.github.berry120.VueLoop:VueLoop:1.0'
+
+## Example usage
 
     new VueLooper("COM7").loop(new LoopCallback() {
     
